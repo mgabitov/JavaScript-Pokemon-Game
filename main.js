@@ -4,31 +4,35 @@ let superKickCounter = 0;
 
 const character = {
     name: 'Pickachu',
-    defaultHP: 100,
-    damageHP: 100,
+    defaultHP: 500,
+    damageHP: 500,
     elHP: document.getElementById('health-character'),
     elProgressbar: document.getElementById('progressbar-character'),
+    renderHP: renderHP,
+    changeHP: changeHP,
 }
 
 const enemy = {
     name: 'Charmander',
-    defaultHP: 100,
-    damageHP: 100,
+    defaultHP: 500,
+    damageHP: 500,
     elHP: document.getElementById('health-enemy'),
     elProgressbar: document.getElementById('progressbar-enemy'),
+    renderHP: renderHP,
+    changeHP: changeHP,
 }
 
 $btn.addEventListener('click', function () {
     console.log('Kick');
-    changeHP(random(20), character);
-    changeHP(random(20), enemy);
+    character.changeHP(random(20));
+    enemy.changeHP(random(20));
 })
 
 $superbtn.addEventListener('click', function () {
     if (superKickCounter === 0) {
         console.log('Super-Kick');
-        changeHP(random(50), character);
-        changeHP(random(50), enemy);
+        character.changeHP(random(50));
+        enemy.changeHP(random(50));
         $superbtn.disabled = true;
     }
     else {
@@ -39,33 +43,33 @@ $superbtn.addEventListener('click', function () {
 
 function init() {
     console.log('Start Game!');
-    renderHP(character);
-    renderHP(enemy);
+    character.renderHP();
+    enemy.renderHP();
 }
 
-function renderHP(person) {
-    renderHPLife(person);
-    renderProgressbarHP(person);
+function renderHP() {
+    renderHPLife.call(this)
+    renderProgressbarHP.call(this);
 }
 
-function renderHPLife(person) {
-    person.elHP.innerText = person.damageHP + ' / ' + person.defaultHP;
+function renderHPLife() {
+    this.elHP.innerText = this.damageHP + ' / ' + this.defaultHP;
 }
 
-function renderProgressbarHP(person) {
-    person.elProgressbar.style.width = person.damageHP + '%';
+function renderProgressbarHP() {
+    this.elProgressbar.style.width = (this.damageHP / this.defaultHP) * 100 + '%';
 }
 
-function changeHP(count, person) {
-    if (person.damageHP < count) {
-        person.damageHP = 0;
-        alert('Бедный ' + person.name + ' проиграл бой');
+function changeHP(count) {
+    if (this.damageHP < count) {
+        this.damageHP = 0;
+        alert('Бедный ' + this.name + ' проиграл бой');
         $btn.disabled = true;
     }
     else {
-        person.damageHP -= count;
+        this.damageHP -= count;
     }
-    renderHP(person);
+    this.renderHP();
 }
 
 function random(num) {
