@@ -5,6 +5,9 @@ function $getElById(id) {
 const $btn = $getElById('btn-kick');
 const $superbtn = $getElById('btn-superkick');
 let superKickCounter = 0;
+let thunderJolt = 0;
+const superKickMaxCounter = 4; //максимальное количество использований кнопки SuoerKick
+const kickMaxCounter = 9; //максимальное количество использований кнопки Kick
 
 const character = {
     name: 'Pickachu',
@@ -12,10 +15,10 @@ const character = {
     damageHP: 150,
     elHP: $getElById('health-character'),
     elProgressbar: $getElById('progressbar-character'),
-    renderHP: renderHP,
-    changeHP: changeHP,
-    renderHPLife: renderHPLife,
-    renderProgressbarHP: renderProgressbarHP,
+    renderHP,
+    changeHP,
+    renderHPLife,
+    renderProgressbarHP,
 }
 
 const enemy = {
@@ -24,32 +27,49 @@ const enemy = {
     damageHP: 150,
     elHP: $getElById('health-enemy'),
     elProgressbar: $getElById('progressbar-enemy'),
-    renderHP: renderHP,
-    changeHP: changeHP,
-    renderHPLife: renderHPLife,
-    renderProgressbarHP: renderProgressbarHP,
+    renderHP,
+    changeHP,
+    renderHPLife,
+   renderProgressbarHP,
 }
 
-const {name, damageHP} = character;
-const {name: nameEnemy, damageHP: damageHPEnemy } = enemy;
+function makeCounter() {
+    let currentCount = 1;
+    return function () {
+        return currentCount++;
+    }
+}
+
+let kickCounter = makeCounter();
+let superCounter = makeCounter();
 
 $btn.addEventListener('click', function () {
     console.log('Kick');
-    character.changeHP(random(20));
-    enemy.changeHP(random(20));
+    thunderJolt = kickCounter();
+    if (thunderJolt <=kickMaxCounter) {
+        character.changeHP(random(20));
+        enemy.changeHP(random(20));
+        console.log('Количество совершенных ударов:' + thunderJolt);
+        document.getElementById("joltNumber").innerHTML = `[${kickMaxCounter - thunderJolt}]`;
+    }
+    else {
+        $btn.disabled = true;
+    }
 })
 
 $superbtn.addEventListener('click', function () {
-    if (superKickCounter === 0) {
+   superKickCounter = superCounter();
+   console.log(superKickCounter);
+    if (superKickCounter <= superKickMaxCounter) {
         console.log('Super-Kick');
         character.changeHP(random(50));
         enemy.changeHP(random(50));
-        $superbtn.disabled = true;
+        console.log('Количество совершенных суперударов:' + superKickCounter);
+        document.getElementById("countNumber").innerHTML = `[${superKickMaxCounter - superKickCounter}]`;
     }
     else {
         $superbtn.disabled = true;
     }
-    superKickCounter++;
 })
 
 function init() {
@@ -83,6 +103,7 @@ function changeHP(count) {
         this.damageHP = 0;
         alert('Бедный ' + this.name + ' проиграл бой');
         $btn.disabled = true;
+        $superbtn.disabled = true;
     }
     this.renderHP();
 }
