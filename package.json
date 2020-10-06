@@ -1,0 +1,25 @@
+{
+  "name": "First",
+  "version": "1.0.0",
+  "description": "Pokemon Battle",
+  "scripts": {
+    "start": "webpack-dev-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mgabitov/js-marathon.git"
+  },
+  "author": "Marat Gabitov",
+  "license": "ISC",
+  "homepage": "https://agitated-edison-4d2e75.netlify.app/",
+  "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-transform-runtime": "^7.11.5",
+    "@babel/preset-env": "^7.11.5",
+    "babel-loader": "^8.1.0",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  }
+}

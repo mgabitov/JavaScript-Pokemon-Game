@@ -13,7 +13,7 @@ const player2 = new Pokemon({
     hp: 120,
     selectors: 'enemy',
 })
-
+console.log('TEST')
 console.log(player1);
 console.log(player2);
 
