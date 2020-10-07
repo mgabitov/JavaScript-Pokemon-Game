@@ -1,3 +1,5 @@
+import {resetGame} from "./game.js";
+
 class Selectors {
     constructor(name) {
         this.elHP = document.getElementById(`health-${name}`);
@@ -6,7 +8,7 @@ class Selectors {
 }
 
 class Pokemon extends Selectors {
-    constructor({name, hp, type, selectors}) {
+    constructor({name, hp, type, selectors, attacks = [] }) {
         super(selectors);
 
         this.name = name;
@@ -15,17 +17,17 @@ class Pokemon extends Selectors {
             total: hp,
         };
         this.type = type;
+        this.attacks = attacks;
 
         this.renderHP();
     }
-    changeHP = ($btn1, $btn2, count, cb) => {
+    changeHP = ($btn, count, cb) => {
        this.hp.current -= count;
 
        if (this.hp.current <= 0) {
            this.hp.current = 0;
            alert('Бедный ' + this.name + ' проиграл бой');
-           $btn1.disabled = true;
-           $btn2.disabled = true;
+           resetGame();
        }
         this.renderHP();
         cb && cb(count);
@@ -42,7 +44,14 @@ class Pokemon extends Selectors {
     }
 
     renderProgressbarHP = () => {
-        this.elProgressbar.style.width = (this.damageHP / this.defaultHP) * 100 + '%';
+        this.elProgressbar.style.width = (this.hp.current / this.hp.total) * 100 + '%';
+        if (this.hp.current > 20 && this.hp.current <= 60) {
+            this.elProgressbar.className = 'health low';
+        }
+        else if (this.hp.current <= 20) {
+            this.elProgressbar.className = 'health critical';
+        }
+        else this.elProgressbar.className = 'health';
     }
 }
 
