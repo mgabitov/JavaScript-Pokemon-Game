@@ -45,6 +45,12 @@ body {
     flex-direction: column;
 }
 
+.winner {
+    color: #d20f46;
+    font-weight: 600;
+    font-size: 28px;
+}
+
 .playground {
     max-width: 1024px;
     display: flex;
