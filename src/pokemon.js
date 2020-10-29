@@ -1,4 +1,5 @@
 import {resetGame} from "./game.js";
+import {$control} from "./main.js";
 
 class Selectors {
     constructor(name) {
@@ -26,7 +27,10 @@ class Pokemon extends Selectors {
 
        if (this.hp.current <= 0) {
            this.hp.current = 0;
-           alert('Бедный ' + this.name + ' проиграл бой');
+           const $winner = document.createElement('p');
+           $winner.classList.add('winner');
+           $winner.innerText = 'Бедный ' + this.name + ' проиграл бой!';
+           $control.appendChild($winner);
            resetGame();
        }
         this.renderHP();
